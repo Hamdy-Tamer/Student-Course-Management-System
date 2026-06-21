@@ -38,6 +38,7 @@ public class CourseManagement {
 
         int courseID = counterId++;
         courses.put(courseID, new Course(courseID, course_name, course_code));
+        course_codes.add(course_code);
         System.out.println("Course is added successfully. ID: " + courseID);
     }
 
@@ -90,8 +91,9 @@ public class CourseManagement {
     }
 
     public void removeCourse(int id) {
-        if (courses.containsKey(id)) {
-            courses.remove(id);
+        Course c = courses.remove(id);
+        if (c != null) {
+            course_codes.remove(c.getCourseCode());
             System.out.println("Course with ID " + id + " is removed.");
         } else {
             System.out.println("Course not found.");
