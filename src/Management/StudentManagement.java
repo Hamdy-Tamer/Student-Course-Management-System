@@ -34,7 +34,7 @@ public class StudentManagement {
 
         int studentID = counterId++;
         students.put(studentID, new Student(studentID, first_name, last_name, email));
-        System.out.println("Domain.Student is added successfully. ID: " + studentID);
+        System.out.println("Student is added successfully. ID: " + studentID);
     }
 
     public void viewAllStudents() {
@@ -71,9 +71,9 @@ public class StudentManagement {
     public void removeStudent(int id) {
         if (students.containsKey(id)) {
             students.remove(id);
-            System.out.println("Domain.Student with ID " + id + " removed.");
+            System.out.println("Student with ID " + id + " is removed.");
         } else {
-            System.out.println("Domain.Student not found.");
+            System.out.println("Student not found.");
         }
     }
 }
