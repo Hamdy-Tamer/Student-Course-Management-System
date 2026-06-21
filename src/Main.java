@@ -1,6 +1,7 @@
 import Domain.Student;
 import Domain.Course;
 import Management.CourseManagement;
+import Management.EnrollmentManagement;
 import Management.StudentManagement;
 
 import java.util.Scanner;
@@ -11,6 +12,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         StudentManagement sm = new StudentManagement();
         CourseManagement cm = new CourseManagement();
+        EnrollmentManagement em = new EnrollmentManagement(sm, cm);
 
         int choice = 1;
 
@@ -18,7 +20,8 @@ public class Main {
             System.out.println("\n===== MAIN MENU =====");
             System.out.println("1. Student Management");
             System.out.println("2. Course Management");
-            System.out.println("3. Exit");
+            System.out.println("3. Enrollment Management");
+            System.out.println("4. Exit");
 
             boolean validChoice = false;
             while (!validChoice) {
@@ -45,12 +48,15 @@ public class Main {
                     courseMenu(scanner, cm);
                     break;
                 case 3:
+                    enrollmentMenu(scanner, em);
+                    break;
+                case 4:
                     System.out.println("Good Bye");
                     break;
                 default:
                     System.out.println("Unexpected error.");
             }
-        } while (choice != 3);
+        } while (choice != 4);
 
         scanner.close();
     }
@@ -208,6 +214,62 @@ public class Main {
                     System.out.println("Unexpected error.");
             }
         } while (choice != 7);
+    }
+
+    // Enrollment Management Menu
+    private static void enrollmentMenu(Scanner scanner, EnrollmentManagement em){
+          int choice = 0;
+
+          do{
+              System.out.println("\n--- Enrollment Management System ---");
+              System.out.println("1. Enroll a Student in a Course");
+              System.out.println("2. View all Courses Assigned to a Student");
+              System.out.println("3. View all Students Enrolled in a Course");
+              System.out.println("4. Remove an Enrollment");
+              System.out.println("5. Exit");
+
+              boolean validChoice = false;
+              while (!validChoice) {
+                  System.out.print("\nEnter your choice: ");
+                  try {
+                      choice = scanner.nextInt();
+                      if (choice >= 1 && choice <= 5) {
+                          validChoice = true;
+                      } else {
+                          System.out.println("Invalid choice. Enter a number between 1 and 5.");
+                      }
+                  } catch (InputMismatchException e) {
+                      System.out.println("Invalid input. Please enter an integer (1–5).");
+                      scanner.next();
+                  }
+              }
+              scanner.nextLine();
+
+              switch(choice){
+                  case 1:
+                      int studentID = readPositiveInt(scanner, "Enter Student ID: ");
+                      int courseID = readPositiveInt(scanner, "Enter Course ID: ");
+                      em.enrollStudent(studentID, courseID);
+                      break;
+                  case 2:
+                      int studentId = readPositiveInt(scanner, "Enter Student ID: ");
+                      em.viewStudentEnrolledCourses(studentId);
+                      break;
+                  case 3:
+                      int courseId = readPositiveInt(scanner, "Enter Course ID: ");
+                      em.viewCoursesEnrolledStudents(courseId);
+                      break;
+                  case 4:
+                      int sID = readPositiveInt(scanner, "Enter Student ID: ");
+                      int cID = readPositiveInt(scanner, "Enter Course ID: ");
+                      em.removeEnrollment(sID, cID);
+                      break;
+                  case 5:
+                      System.out.println("Returning to Main Menu...");
+                      break;
+              }
+
+          }while(choice != 5);
     }
 
     // Read a positive integer
